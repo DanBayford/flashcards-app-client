@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "@/hooks";
-import { LogoutButton } from "@/components/auth";
+import { Header } from "@/components";
 import { useNavigate, Outlet } from "react-router";
 
 const AppLayout = () => {
@@ -15,14 +15,12 @@ const AppLayout = () => {
   }, [accessToken, authReady, navigate]);
 
   return (
-    <>
-      <div>
-        App layout <LogoutButton />
-      </div>
-      <main>
+    <div className="p-4">
+      <Header />
+      <main className="grid w-full max-w-[1000px] mx-auto grid-cols-[repeat(9,minmax(60px,1fr))] gap-3">
         <Outlet />
       </main>
-    </>
+    </div>
   );
 };
 

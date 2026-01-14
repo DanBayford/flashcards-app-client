@@ -16,7 +16,7 @@ const AuthLayout = () => {
   }, [accessToken, authReady, navigate]);
 
   return (
-    <div className="min-h-dvh w-[400px] mx-auto flex flex-col gap-4 items-center mt-20">
+    <div className="w-[400px] mx-auto flex flex-col gap-4 items-center mt-20">
       <div className="flex w-full justify-center p-3 bg-white brutal-shadow rounded-md">
         <LargeLogo className="hidden sm:block" />
         <SmallLogo className="sm:hidden" />

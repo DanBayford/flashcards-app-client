@@ -1,5 +1,11 @@
+import { NewQuestionForm, QuestionsList } from "@/components/questions";
 const QuestionsPage = () => {
-  return <p>QuestionsPage</p>;
+  return (
+    <>
+      <NewQuestionForm />
+      <QuestionsList />
+    </>
+  );
 };
 
 export default QuestionsPage;

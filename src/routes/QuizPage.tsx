@@ -1,5 +1,13 @@
+import { QuizContainer, QuizStatistics } from "@/components/quiz";
+
 const QuizPage = () => {
-  return <p>QuizPage</p>;
+  // Quiz Context
+  return (
+    <>
+      <QuizContainer />
+      <QuizStatistics />
+    </>
+  );
 };
 
 export default QuizPage;

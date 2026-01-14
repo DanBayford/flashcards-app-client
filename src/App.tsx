@@ -10,7 +10,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className="font-sans bg-neutral-100 border">
+        <div className="font-sans min-h-screen bg-neutral-100">
           <Router>
             <AppRoutes />
           </Router>
