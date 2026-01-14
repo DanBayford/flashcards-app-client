@@ -1,5 +1,9 @@
+import { useEffect } from "react";
 import { useAuth } from "@/hooks";
 import api from "@/lib/api";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +18,10 @@ const schema = yup
       .required("Email is required")
       .email("Enter a valid email"),
     password: yup.string().required("Password is required"),
+    confirmPassword: yup
+      .string()
+      .required("Please confirm your password")
+      .oneOf([yup.ref("password")], "Passwords do not match"),
   })
   .required();
 
@@ -31,7 +39,7 @@ export const RegisterForm = () => {
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(schema),
     mode: "onSubmit", // initial validation
-    reValidateMode: "onChange", // subsequent revalidation on changes
+    // reValidateMode: "onChange", // subsequent revalidation on changes
     defaultValues: {
       email: "",
       password: "",
@@ -44,21 +52,31 @@ export const RegisterForm = () => {
       // Set AuthContext
       setAccessToken(data?.accessToken);
       setUser(data?.userInfo);
-      // Navigate to Quiz page
-      navigate("/questions"); // Questions for now to check hooks
+      navigate("/questions");
     },
   });
 
+  // confirmPassword field not required by mutation
   const onSubmitHandler = handleSubmit(
-    async (values: TRegisterRequest) => await mutateAsync(values)
+    async (values: TRegisterRequest & { confirmPassword: string }) =>
+      await mutateAsync({ email: values.email, password: values.password })
   );
 
+  useEffect(() => {
+    console.log("errors", errors, isValid);
+  }, [errors, isValid]);
+
   return (
-    <form onSubmit={onSubmitHandler} noValidate>
-      Register Form
+    <form
+      onSubmit={onSubmitHandler}
+      noValidate
+      className="p-4 flex flex-col gap-4 justify-center"
+    >
       <div>
-        <label htmlFor="email">Email</label>
-        <input
+        <Label htmlFor="email" className="mb-2">
+          Email
+        </Label>
+        <Input
           id="email"
           type="email"
           autoComplete="email"
@@ -67,22 +85,28 @@ export const RegisterForm = () => {
         {errors.email && <p role="alert">{errors.email.message}</p>}
       </div>
       <div style={{ marginTop: 12 }}>
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          {...register("password")}
-        />
+        <Label htmlFor="password" className="mb-2">
+          Password
+        </Label>
+        <Input id="password" type="password" {...register("password")} />
         {errors.password && <p role="alert">{errors.password.message}</p>}
       </div>
-      <button
-        type="submit"
-        disabled={isSubmitting || !isValid}
-        style={{ marginTop: 16 }}
-      >
+      <div style={{ marginTop: 12 }}>
+        <Label htmlFor="password" className="mb-2">
+          Confirm Password
+        </Label>
+        <Input
+          id="confirmPassword"
+          type="password"
+          {...register("confirmPassword")}
+        />
+        {errors.confirmPassword && (
+          <p role="alert">{errors.confirmPassword.message}</p>
+        )}
+      </div>
+      <Button type="submit" disabled={isSubmitting} style={{ marginTop: 16 }}>
         {isSubmitting ? "Registering..." : "Register"}
-      </button>
+      </Button>
     </form>
   );
 };

@@ -1,6 +1,9 @@
 import { useAuth } from "@/hooks";
 import { useNavigate } from "react-router";
 import api from "@/lib/api";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,8 +48,7 @@ export const LoginForm = () => {
       // Set AuthContext
       setAccessToken(data?.accessToken);
       setUser(data?.userInfo);
-      // Navigate to Quiz page
-      navigate("/questions"); // Questions for now to check hooks
+      navigate("/questions");
     },
   });
 
@@ -55,11 +57,16 @@ export const LoginForm = () => {
   );
 
   return (
-    <form onSubmit={onSubmitHandler} noValidate>
-      Login Form
+    <form
+      onSubmit={onSubmitHandler}
+      noValidate
+      className="p-4 flex flex-col gap-4 justify-center"
+    >
       <div>
-        <label htmlFor="email">Email</label>
-        <input
+        <Label htmlFor="email" className="mb-2">
+          Email
+        </Label>
+        <Input
           id="email"
           type="email"
           autoComplete="email"
@@ -68,8 +75,10 @@ export const LoginForm = () => {
         {errors.email && <p role="alert">{errors.email.message}</p>}
       </div>
       <div style={{ marginTop: 12 }}>
-        <label htmlFor="password">Password</label>
-        <input
+        <Label htmlFor="password" className="mb-2">
+          Password
+        </Label>
+        <Input
           id="password"
           type="password"
           autoComplete="current-password"
@@ -77,13 +86,9 @@ export const LoginForm = () => {
         />
         {errors.password && <p role="alert">{errors.password.message}</p>}
       </div>
-      <button
-        type="submit"
-        disabled={isSubmitting || !isValid}
-        style={{ marginTop: 16 }}
-      >
+      <Button type="submit" disabled={isSubmitting} style={{ marginTop: 16 }}>
         {isSubmitting ? "Logging in..." : "Log in"}
-      </button>
+      </Button>
     </form>
   );
 };

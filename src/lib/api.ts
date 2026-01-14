@@ -50,18 +50,30 @@ axiosInstance.interceptors.response.use(
   },
   (err) => {
     console.log("axios response interceptor error", err);
-    const errorStatus = err?.status || 500;
-    const errorMessage = err?.response?.data?.error || undefined;
     const originalRequestConfig = err?.config;
+    const errorStatus = err?.status || 500;
+    // Error message(s) can be single property or array
+    const errorMessage = err?.response?.data?.error || undefined;
+    const errorMessagesArray = err?.response?.data?.errors || undefined;
 
+    console.log("originalRequestConfig", originalRequestConfig);
     console.log("errorStatus", errorStatus);
     console.log("errorMessage", errorMessage);
-    console.log("originalRequestConfig", originalRequestConfig);
+    console.log("errorMessagesArray", errorMessagesArray);
 
+    // Global API error message handling
     if (!originalRequestConfig?.failSilently) {
       switch (errorStatus) {
         case 400:
-          toast.error(errorMessage || "Client error");
+          if (errorMessagesArray) {
+            errorMessagesArray.forEach((error: string) => {
+              toast.error(error || "Client error");
+            });
+          } else if (errorMessage) {
+            toast.error(errorMessage);
+          } else {
+            toast.error("Client error");
+          }
           break;
         case 401:
           toast.error(errorMessage || "Unauthorized");
@@ -70,7 +82,15 @@ axiosInstance.interceptors.response.use(
           toast.error(errorMessage || "Forbidden");
           break;
         default:
-          toast.error(errorMessage || "Something went wromg");
+          if (errorMessagesArray) {
+            errorMessagesArray.forEach((error: string) => {
+              toast.error(error || "Something went wromg");
+            });
+          } else if (errorMessage) {
+            toast.error(errorMessage);
+          } else {
+            toast.error("Something went wromg");
+          }
       }
     }
 
