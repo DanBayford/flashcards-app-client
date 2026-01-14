@@ -37,7 +37,7 @@ axiosInstance.interceptors.request.use(
     return requestConfig;
   },
   (err) => {
-    console.log("axios request interceptor error", err);
+    // console.log("axios request interceptor error", err);
     return Promise.reject(err);
   }
 );
@@ -49,17 +49,17 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (err) => {
-    console.log("axios response interceptor error", err);
+    // console.log("axios response interceptor error", err);
     const originalRequestConfig = err?.config;
     const errorStatus = err?.status || 500;
     // Error message(s) can be single property or array
     const errorMessage = err?.response?.data?.error || undefined;
     const errorMessagesArray = err?.response?.data?.errors || undefined;
 
-    console.log("originalRequestConfig", originalRequestConfig);
-    console.log("errorStatus", errorStatus);
-    console.log("errorMessage", errorMessage);
-    console.log("errorMessagesArray", errorMessagesArray);
+    // console.log("originalRequestConfig", originalRequestConfig);
+    // console.log("errorStatus", errorStatus);
+    // console.log("errorMessage", errorMessage);
+    // console.log("errorMessagesArray", errorMessagesArray);
 
     // Global API error message handling
     if (!originalRequestConfig?.failSilently) {

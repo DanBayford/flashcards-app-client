@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAuth } from "@/hooks";
 import api from "@/lib/api";
 import { Button } from "../ui/button";
@@ -35,7 +34,7 @@ export const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(schema),
     mode: "onSubmit", // initial validation
@@ -61,10 +60,6 @@ export const RegisterForm = () => {
     async (values: TRegisterRequest & { confirmPassword: string }) =>
       await mutateAsync({ email: values.email, password: values.password })
   );
-
-  useEffect(() => {
-    console.log("errors", errors, isValid);
-  }, [errors, isValid]);
 
   return (
     <form

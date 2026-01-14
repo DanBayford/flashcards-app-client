@@ -31,7 +31,7 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: yupResolver(schema),
     mode: "onSubmit", // initial validation
