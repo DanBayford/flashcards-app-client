@@ -33,12 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loadAuthOnMount();
   }, []);
 
-  // Keep external token variable (for axios interceptors) syncronised with state
+  // Keep external token variable (for axios interceptors) fresh
   useEffect(() => {
     if (accessToken) {
       AccessToken.set(accessToken);
-    } else {
-      AccessToken.clear();
     }
   }, [accessToken]);
 

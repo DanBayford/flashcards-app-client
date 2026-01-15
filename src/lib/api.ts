@@ -2,7 +2,12 @@ import AccessToken from "./accessToken";
 import axios from "axios";
 import type { AxiosResponse, AxiosRequestConfig } from "axios";
 import { toast } from "react-toastify";
-import type { TLoginRequest, TRegisterRequest, TAuthResponse } from "@/types";
+import type {
+  TLoginRequest,
+  TRegisterRequest,
+  TAuthResponse,
+  TPaginatedQuestions,
+} from "@/types";
 
 const isDev = process.env.NODE_ENV === "development";
 const API_DELAY = isDev ? 400 : 0;
@@ -19,7 +24,7 @@ const axiosInstance = axios.create({
 // Axios defaults
 axiosInstance.defaults.headers.post["Content-Type"] = "application/json";
 
-// Custom axios config
+// Custom axios config object
 declare module "axios" {
   export interface AxiosRequestConfig {
     failSilently?: boolean;
@@ -28,15 +33,16 @@ declare module "axios" {
 
 // Interceptors
 axiosInstance.interceptors.request.use(
-  (requestConfig) => {
+  async (requestConfig) => {
     // console.log("axios request interceptor", requestConfig);
     const accessToken = AccessToken.get();
+    // console.log("accessToken", accessToken);
     if (accessToken) {
       requestConfig.headers.Authorization = `Bearer ${accessToken}`;
     }
     return requestConfig;
   },
-  (err) => {
+  async (err) => {
     // console.log("axios request interceptor error", err);
     return Promise.reject(err);
   }
@@ -48,21 +54,21 @@ axiosInstance.interceptors.response.use(
     await sleep();
     return response;
   },
-  (err) => {
+  async (err) => {
     // console.log("axios response interceptor error", err);
-    const originalRequestConfig = err?.config;
+    const originalRequest = err?.config;
     const errorStatus = err?.status || 500;
     // Error message(s) can be single property or array
     const errorMessage = err?.response?.data?.error || undefined;
     const errorMessagesArray = err?.response?.data?.errors || undefined;
 
-    // console.log("originalRequestConfig", originalRequestConfig);
+    // console.log("originalRequest", originalRequest);
     // console.log("errorStatus", errorStatus);
     // console.log("errorMessage", errorMessage);
     // console.log("errorMessagesArray", errorMessagesArray);
 
     // Global API error message handling
-    if (!originalRequestConfig?.failSilently) {
+    if (!originalRequest?.failSilently) {
       switch (errorStatus) {
         case 400:
           if (errorMessagesArray) {
@@ -76,7 +82,23 @@ axiosInstance.interceptors.response.use(
           }
           break;
         case 401:
-          toast.error(errorMessage || "Unauthorized");
+          // Attempt refresh if not already a retry and not refresh request
+          if (
+            !originalRequest._retry &&
+            !originalRequest.url.includes("/user/refresh")
+          ) {
+            originalRequest._retry = true;
+            try {
+              const { accessToken: newAccessToken } = await api.User.refresh();
+              AccessToken.set(newAccessToken);
+              originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+              // Retry original request
+              return axiosInstance(originalRequest);
+            } catch (e) {
+              console.error(`Error refreshing token: ${e}`);
+              toast.error(errorMessage || "Unauthorized");
+            }
+          }
           break;
         case 403:
           toast.error(errorMessage || "Forbidden");
@@ -89,7 +111,7 @@ axiosInstance.interceptors.response.use(
           } else if (errorMessage) {
             toast.error(errorMessage);
           } else {
-            toast.error("Something went wromg");
+            toast.error("Something went wrong");
           }
       }
     }
@@ -150,8 +172,16 @@ const User = {
   logout: () => requests.post<void>("/user/logout", {}),
 };
 
+const Questions = {
+  getQuestions: (page?: number) =>
+    requests.get<TPaginatedQuestions>("/question", {
+      params: page ? { page } : undefined,
+    }),
+};
+
 const api = {
   User,
+  Questions,
 };
 
 export default api;

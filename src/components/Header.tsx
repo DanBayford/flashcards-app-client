@@ -1,9 +1,14 @@
 import { NavLink } from "react-router";
+import api from "@/lib/api";
+import { Button } from "./ui/button";
 import LargeIcon from "@/assets/img/logo-large.svg?react";
 import SmallIcon from "@/assets/img/logo-small.svg?react";
 import { cn } from "@/lib/utils";
 
 export const Header = () => {
+  const logoutHandler = async () => {
+    await api.User.logout();
+  };
   return (
     <header className="max-w-[1000px] mx-auto mb-4 flex justify-between items-center">
       <LargeIcon className="hidden sm:block" />
@@ -32,6 +37,7 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
+      <Button onClick={logoutHandler}>Log out</Button>
     </header>
   );
 };

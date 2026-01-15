@@ -8,3 +8,33 @@ export type TUser = {
   createdAt: string;
   updatedAt: string;
 };
+
+// Question types
+export type TQuestion = {
+  id: string;
+  prompt: string;
+  hint?: string;
+  answer: string;
+  confidence: number;
+  categories: TCategory[];
+};
+
+export type TPaginatedQuestions = {
+  questions: TQuestion[];
+} & TPaginationObject;
+
+// Category types
+export type TCategory = {
+  id: string;
+  name: string;
+};
+
+// Quiz types
+
+// Misc
+export type TPaginationObject = {
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+};
