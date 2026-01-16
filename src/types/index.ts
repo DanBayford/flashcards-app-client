@@ -10,6 +10,13 @@ export type TUser = {
 };
 
 // Question types
+export type TQuestionFormValues = {
+  prompt: string;
+  hint: string;
+  answer: string;
+  categories: TCategory[];
+};
+
 export type TQuestion = {
   id: string;
   prompt: string;

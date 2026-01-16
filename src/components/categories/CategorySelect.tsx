@@ -4,10 +4,14 @@ import { useCategories } from "@/hooks";
 
 export const CategorySelect = ({
   selectCallback,
-  customStyles = {},
+  customControlStyles = {},
+  customMenuStyles = {},
+  customMultiValueStyles = {},
 }: {
   selectCallback: (data: MultiValue<{ value: string; label: string }>) => void;
-  customStyles?: object;
+  customControlStyles?: object;
+  customMenuStyles?: object;
+  customMultiValueStyles?: object;
 }) => {
   const [searchParams] = useSearchParams();
   const { categories, categoriesLoading } = useCategories();
@@ -45,13 +49,14 @@ export const CategorySelect = ({
             border: "1px solid black",
             boxShadow: "2px 2px 0px rgba(0, 0, 0, 1)",
           },
-          ...customStyles,
+          ...customControlStyles,
         }),
         // Dropdown menu
         menu: (baseStyles) => ({
           ...baseStyles,
           border: "1px solid black",
           boxShadow: "2px 2px 0px rgba(0, 0, 0, 1)",
+          ...customMenuStyles,
         }),
         option: (baseStyles, state) => ({
           ...baseStyles,
@@ -66,6 +71,7 @@ export const CategorySelect = ({
           border: "1px solid black",
           borderRadius: "16px",
           boxShadow: "2px 2px 0 rgba(0,0,0,1)",
+          ...customMultiValueStyles,
         }),
         // Pill label
         multiValueLabel: (baseStyles) => ({

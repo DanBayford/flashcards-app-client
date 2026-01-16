@@ -50,13 +50,13 @@
   --color-neutral-600: #6d5b4d;
   --color-neutral-100: #f7f3f0;
   --color-neutral-0: #ffffff;
-  --color-yellow-900: #f8cb46;
-  --color-blue-900: #92adeb;
-  --color-blue-900: #5072c7;
-  --color-teal-900: #47d9c9;
-  --color-pink-900: #fc8ae5;
-  --color-pink-900: #f073a3;
-  --color-pink-900: #e11966;
+  --color-yellow-500: #f8cb46;
+  --color-blue-400: #92adeb;
+  --color-blue-600: #5072c7;
+  --color-teal-400: #47d9c9;
+  --color-pink-400: #fc8ae5;
+  --color-pink-500: #f073a3;
+  --color-pink-700: #e11966;
   /* Shad CN config */
   --radius: 0.625rem;
   --background: oklch(1 0 0);

@@ -56,7 +56,7 @@ export const QuestionsListControls = () => {
     <div className="flex items-center gap-4">
       <CategorySelect
         selectCallback={selectHandler}
-        customStyles={{ minWidth: "200px", maxWidth: "500px" }}
+        customControlStyles={{ minWidth: "200px", maxWidth: "500px" }}
       />
       <span>
         <Label>
