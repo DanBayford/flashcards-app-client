@@ -6,7 +6,9 @@ import type {
   TLoginRequest,
   TRegisterRequest,
   TAuthResponse,
+  TQuestionsRequest,
   TPaginatedQuestions,
+  TCategory,
 } from "@/types";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -110,8 +112,6 @@ axiosInstance.interceptors.response.use(
             });
           } else if (errorMessage) {
             toast.error(errorMessage);
-          } else {
-            toast.error("Something went wrong");
           }
       }
     }
@@ -173,15 +173,27 @@ const User = {
 };
 
 const Questions = {
-  getQuestions: (page?: number) =>
+  getQuestions: ({ page, categoryIds, hideMastered }: TQuestionsRequest) =>
     requests.get<TPaginatedQuestions>("/question", {
-      params: page ? { page } : undefined,
+      params: {
+        page: page ? page : undefined,
+        categoryId: categoryIds ? categoryIds : undefined,
+        hideMastered: hideMastered ? hideMastered : false,
+      },
+      paramsSerializer: {
+        indexes: null,
+      },
     }),
+};
+
+const Categories = {
+  getCategories: () => requests.get<TCategory[]>("/category"),
 };
 
 const api = {
   User,
   Questions,
+  Categories,
 };
 
 export default api;

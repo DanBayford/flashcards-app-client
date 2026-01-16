@@ -6,14 +6,14 @@ import { Spinner } from "../ui/spinner";
 export const QuestionsList = ({
   pageNumber,
   categoryIds,
-  isMastered,
+  hideMastered,
 }: {
   pageNumber: number;
   categoryIds: string[];
-  isMastered: boolean;
+  hideMastered: boolean;
 }) => {
   const { questions, questionsLoading, questionsError, paginationData } =
-    useQuestions(pageNumber, categoryIds, isMastered);
+    useQuestions(pageNumber, categoryIds, hideMastered);
 
   if (questionsLoading) {
     return (
@@ -31,7 +31,7 @@ export const QuestionsList = ({
   }
 
   return (
-    <section className="col-span-full flex flex-col gap-2">
+    <section className="col-span-full px-2 flex flex-col gap-2">
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {questions
           ? questions.map((q) => <QuestionCard key={q.id} question={q} />)

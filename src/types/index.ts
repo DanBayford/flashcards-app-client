@@ -19,6 +19,12 @@ export type TQuestion = {
   categories: TCategory[];
 };
 
+export type TQuestionsRequest = {
+  page?: number;
+  categoryIds: string[];
+  hideMastered?: boolean;
+};
+
 export type TPaginatedQuestions = {
   questions: TQuestion[];
 } & TPaginationObject;

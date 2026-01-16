@@ -3,23 +3,17 @@ import api from "@/lib/api";
 
 export const useQuestions = (
   pageNumber: number,
-  categoryIds: string[] | undefined,
-  isMastered: boolean = false
+  categoryIds: string[],
+  hideMastered: boolean = false
 ) => {
-  // Create dynamic cache key based on page, category and mastered state
-  const queryKeyParams = [pageNumber];
-
-  if (categoryIds) {
-    console.log("categoryId", categoryIds);
-  }
-
-  if (isMastered) {
-    console.log("isMastered", isMastered);
-  }
-
   const { data, isLoading, isError } = useQuery({
-    queryKey: [`/questions`, queryKeyParams],
-    queryFn: () => api.Questions.getQuestions(pageNumber),
+    queryKey: [`/questions`, pageNumber, categoryIds, hideMastered],
+    queryFn: () =>
+      api.Questions.getQuestions({
+        page: pageNumber,
+        categoryIds,
+        hideMastered,
+      }),
   });
 
   const paginationData = data
