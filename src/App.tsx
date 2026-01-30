@@ -16,7 +16,7 @@ function App() {
           </Router>
         </div>
       </AuthProvider>
-      <ToastContainer />
+      <ToastContainer closeOnClick autoClose={2000} />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

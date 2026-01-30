@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   QuestionConfidence,
   QuestionForm,
@@ -14,13 +15,16 @@ import {
 import type { TQuestion } from "@/types";
 
 export const QuestionCard = ({ question }: { question: TQuestion }) => {
-  // console.log("question", question);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const closeDialogCallback = () => setIsDialogOpen(false);
+
   return (
     <li className="flex flex-col brutal-shadow bg-white rounded-xl">
       <div className="p-3 border-b border-black font-bold text-lg">
         {question.prompt}
       </div>
-      <div className="flex-grow p-3 border-b border-black">
+      <div className="grow p-3 border-b border-black">
         <span className="text-gray-400 font-semibold text-sm">Answer:</span>
         <p className="mt-2">{question.answer}</p>
       </div>
@@ -32,7 +36,11 @@ export const QuestionCard = ({ question }: { question: TQuestion }) => {
           <QuestionConfidence confidence={question.confidence} />
         </span>
         <span className="basis-1/5 flex justify-center items-center">
-          <Dialog>
+          <Dialog
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+            aria-describedby="question-modal"
+          >
             <DialogTrigger>
               <PaginationEllipsis className="hover:cursor-pointer" />
             </DialogTrigger>
@@ -40,7 +48,10 @@ export const QuestionCard = ({ question }: { question: TQuestion }) => {
               <DialogHeader>
                 <DialogTitle>Edit your card</DialogTitle>
               </DialogHeader>
-              <QuestionForm />
+              <QuestionForm
+                questionToEdit={question}
+                closeDialogCallback={closeDialogCallback}
+              />
             </DialogContent>
           </Dialog>
         </span>

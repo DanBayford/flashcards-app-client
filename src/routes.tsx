@@ -6,10 +6,12 @@ import QuestionsPage from "./routes/QuestionsPage";
 import QuizPage from "./routes/QuizPage";
 import AuthLayout from "./routes/layouts/AuthLayout";
 import AppLayout from "./routes/layouts/AppLayout";
+import { AuthRedirect } from "./components/auth";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<AuthRedirect />} />
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

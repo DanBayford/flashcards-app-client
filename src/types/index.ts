@@ -10,11 +10,27 @@ export type TUser = {
 };
 
 // Question types
-export type TQuestionFormValues = {
+export type TNewQuestionForm = {
   prompt: string;
   hint: string;
   answer: string;
   categories: TCategory[];
+};
+
+export type TCreateNewQuestionRequest = {
+  prompt: string;
+  hint: string;
+  answer: string;
+  categoryIds: string[];
+};
+
+export type TUpdateQuestionRequest = {
+  id: string;
+  prompt: string;
+  hint: string;
+  answer: string;
+  confidence: number;
+  categoryIds: string[];
 };
 
 export type TQuestion = {

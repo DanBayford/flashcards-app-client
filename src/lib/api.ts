@@ -9,6 +9,9 @@ import type {
   TQuestionsRequest,
   TPaginatedQuestions,
   TCategory,
+  TQuestion,
+  TCreateNewQuestionRequest,
+  TUpdateQuestionRequest,
 } from "@/types";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -20,7 +23,7 @@ const axiosInstance = axios.create({
     ? "http://localhost:5000/api"
     : "https://flashcards.bayford.dev/api",
   timeout: 3000,
-  withCredentials: true,
+  withCredentials: true, // inc cookies
 });
 
 // Axios defaults
@@ -54,6 +57,7 @@ axiosInstance.interceptors.response.use(
   async (response) => {
     // console.log("axios response interceptor", response);
     await sleep();
+    // Check for response message
     return response;
   },
   async (err) => {
@@ -89,6 +93,7 @@ axiosInstance.interceptors.response.use(
             !originalRequest._retry &&
             !originalRequest.url.includes("/user/refresh")
           ) {
+            // console.log("originalRequest", originalRequest);
             originalRequest._retry = true;
             try {
               const { accessToken: newAccessToken } = await api.User.refresh();
@@ -98,7 +103,7 @@ axiosInstance.interceptors.response.use(
               return axiosInstance(originalRequest);
             } catch (e) {
               console.error(`Error refreshing token: ${e}`);
-              toast.error(errorMessage || "Unauthorized");
+              // toast.error(errorMessage || "Unauthorized");
             }
           }
           break;
@@ -110,7 +115,7 @@ axiosInstance.interceptors.response.use(
             errorMessagesArray.forEach((error: string) => {
               toast.error(error || "Something went wromg");
             });
-          } else if (errorMessage) {
+          } else if (errorMessage && errorStatus !== 401) {
             toast.error(errorMessage);
           }
       }
@@ -184,6 +189,34 @@ const Questions = {
         indexes: null,
       },
     }),
+  createQuestion: ({
+    prompt,
+    hint,
+    answer,
+    categoryIds,
+  }: TCreateNewQuestionRequest) =>
+    requests.post<TQuestion>("/question", {
+      prompt,
+      hint,
+      answer,
+      questionCategoryIds: categoryIds,
+    }),
+  updateQuestion: ({
+    id,
+    prompt,
+    hint,
+    answer,
+    confidence,
+    categoryIds,
+  }: TUpdateQuestionRequest) =>
+    requests.put(`/question/${id}`, {
+      prompt,
+      hint,
+      answer,
+      confidence,
+      questionCategoryIds: categoryIds,
+    }),
+  deleteQuestion: (id: string) => requests.delete(`/question/${id}`),
 };
 
 const Categories = {

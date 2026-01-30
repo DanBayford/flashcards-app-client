@@ -8,7 +8,8 @@ export const useCategories = () => {
   });
 
   return {
-    categories: data || [],
+    categories:
+      data?.sort(({ name: a }, { name: b }) => a.localeCompare(b)) || [],
     categoriesLoading: isLoading,
     categoriesError: isError,
   };

@@ -1,11 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useToast } from "./useToast";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 
 export const useQuestions = (
-  pageNumber: number,
-  categoryIds: string[],
+  pageNumber: number = 1,
+  categoryIds: string[] = [],
   hideMastered: boolean = false
 ) => {
+  const queryClient = useQueryClient();
+  const { successToast, errorToast } = useToast();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: [`/questions`, pageNumber, categoryIds, hideMastered],
     queryFn: () =>
@@ -15,6 +19,50 @@ export const useQuestions = (
         hideMastered,
       }),
   });
+
+  const useCreateQuestion = (successCallback = () => {}) => {
+    return useMutation({
+      mutationFn: api.Questions.createQuestion,
+      onSuccess: () => {
+        // Invalidates all keys inc 'questions'
+        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        successToast("New question created");
+        // Call appropriate success callback (clear form / close modal)
+        successCallback();
+      },
+      onError: () => {
+        errorToast("Error creating question");
+      },
+    });
+  };
+
+  const useUpdateQuestion = (successCallback = () => {}) => {
+    return useMutation({
+      mutationFn: api.Questions.updateQuestion,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        successToast("Question updated");
+        successCallback();
+      },
+      onError: () => {
+        errorToast("Error updating question");
+      },
+    });
+  };
+
+  const useDeleteQuestion = (successCallback = () => {}) => {
+    return useMutation({
+      mutationFn: api.Questions.deleteQuestion,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        successToast("Question deleted");
+        successCallback();
+      },
+      onError: () => {
+        errorToast("Error deleting question");
+      },
+    });
+  };
 
   const paginationData = data
     ? {
@@ -30,5 +78,8 @@ export const useQuestions = (
     questionsLoading: isLoading,
     questionsError: isError,
     paginationData,
+    useCreateQuestion,
+    useUpdateQuestion,
+    useDeleteQuestion,
   };
 };

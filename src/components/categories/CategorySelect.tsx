@@ -1,34 +1,36 @@
-import { useSearchParams } from "react-router";
 import Select, { type MultiValue } from "react-select";
 import { useCategories } from "@/hooks";
 
 export const CategorySelect = ({
   selectCallback,
+  alreadySelectedIds = [],
   customControlStyles = {},
   customMenuStyles = {},
   customMultiValueStyles = {},
 }: {
   selectCallback: (data: MultiValue<{ value: string; label: string }>) => void;
   customControlStyles?: object;
+  alreadySelectedIds?: string[];
   customMenuStyles?: object;
   customMultiValueStyles?: object;
 }) => {
-  const [searchParams] = useSearchParams();
   const { categories, categoriesLoading } = useCategories();
 
   if (categoriesLoading) return null;
 
-  // Available options
-  const selectCategories = categories?.map((category) => ({
+  // All available options
+  const selectCategories = categories.map((category) => ({
     value: category.id,
     label: category.name,
   }));
 
-  // Check URL for any already selected via URL state
-  const categoryIds = searchParams.getAll("categoryId");
-  const alreadySelected = selectCategories.filter(({ value }) =>
-    categoryIds.includes(value)
-  );
+  // Pre selected options
+  const alreadySelected = categories
+    .filter((c) => alreadySelectedIds?.includes(c.id))
+    .map((category) => ({
+      value: category.id,
+      label: category.name,
+    }));
 
   return (
     <Select

@@ -1,3 +1,4 @@
+export { DeleteQuestion } from "./DeleteQuestion";
 export { QuestionForm } from "./QuestionForm";
 export { QuestionCard } from "./QuestionCard";
 export { QuestionConfidence } from "./QuestionConfidence";

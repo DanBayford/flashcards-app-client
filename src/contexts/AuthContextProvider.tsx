@@ -40,9 +40,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [accessToken]);
 
+  const logoutUser = () => {
+    setAccessToken(null);
+    setUser(null);
+    setAuthReady(false);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ accessToken, setAccessToken, authReady, user, setUser }}
+      value={{
+        accessToken,
+        setAccessToken,
+        authReady,
+        user,
+        setUser,
+        logoutUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
