@@ -1,6 +1,12 @@
 import { NavLink, useNavigate } from "react-router";
 import { useAuth } from "@/hooks";
 import { Button } from "./ui/button";
+import {
+  CategoryIcon,
+  LogoutIcon,
+  QuestionIcon,
+  StudyIcon,
+} from "@/components/icons";
 import api from "@/lib/api";
 import { cn } from "@/lib/utils";
 import LargeIcon from "@/assets/img/logo-large.svg?react";
@@ -24,30 +30,69 @@ export const Header = () => {
       <LargeIcon className="hidden sm:block" />
       <SmallIcon className="sm:hidden" />
       <nav className="brutal-shadow bg-white rounded-4xl">
-        <ul className="flex gap-1 px-1 py-4 font-semibold">
+        <ul className="flex gap-1 px-1 pt-2 pb-1 md:py-4 font-semibold">
           <li>
             <NavLink
               to="/quiz"
               className={({ isActive }) =>
-                cn("px-3 py-3 rounded-4xl", isActive ? "bg-yellow-400" : "")
+                cn(
+                  "rounded-4xl",
+                  isActive
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    : "px-3 py-3"
+                )
               }
             >
-              Study Mode
+              <span className="hidden md:inline-block">Study</span>
+              <span className="inline-block md:hidden">
+                <StudyIcon size={40} />
+              </span>
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/questions"
               className={({ isActive }) =>
-                cn("px-3 py-3 rounded-4xl", isActive ? "bg-yellow-400" : "")
+                cn(
+                  "rounded-4xl",
+                  isActive
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    : "px-3 py-3"
+                )
               }
             >
-              All Cards
+              <span className="hidden md:inline-block">Cards</span>
+              <span className="inline-block md:hidden">
+                <QuestionIcon size={40} />
+              </span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/categories"
+              className={({ isActive }) =>
+                cn(
+                  "rounded-4xl",
+                  isActive
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    : "px-3 py-3"
+                )
+              }
+            >
+              <span className="hidden md:inline-block">Categories</span>
+              <span className="inline-block md:hidden">
+                <CategoryIcon size={40} />
+              </span>
             </NavLink>
           </li>
         </ul>
       </nav>
-      <Button onClick={logoutHandler}>Log out</Button>
+      <Button onClick={logoutHandler}>
+        <span className="hidden md:inline-block">LogOut</span>
+        <span className="md:hidden">
+          <LogoutIcon size={40} />
+        </span>
+      </Button>
     </header>
   );
 };

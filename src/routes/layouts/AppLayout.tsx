@@ -17,7 +17,7 @@ const AppLayout = () => {
   return (
     <div className="p-4">
       <Header />
-      <main className="grid w-full max-w-[1000px] mx-auto grid-cols-[repeat(9,minmax(60px,1fr))] gap-3">
+      <main className="w-full grid max-w-250 mx-auto grid-cols-4 lg:grid-cols-[repeat(9,minmax(60px,1fr))] gap-3">
         <Outlet />
       </main>
     </div>
