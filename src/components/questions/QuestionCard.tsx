@@ -4,14 +4,14 @@ import {
   QuestionForm,
   QuestionTags,
 } from "@/components/questions";
-import { PaginationEllipsis } from "../ui/pagination";
+import { PaginationEllipsis } from "@/components/ui/pagination";
 import {
   Dialog,
   DialogTrigger,
   DialogHeader,
   DialogTitle,
   DialogContent,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import type { TQuestion } from "@/types";
 
 export const QuestionCard = ({ question }: { question: TQuestion }) => {

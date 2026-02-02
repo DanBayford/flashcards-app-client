@@ -17,7 +17,7 @@ export const QuestionsList = ({
 
   if (questionsLoading) {
     return (
-      <div className="col-span-full flex flex-col gap-4 sjustify-center items-center mt-30">
+      <div className="col-span-full flex flex-col gap-4 justify-center items-center mt-30">
         <Spinner className="size-8" />
         <p>Loading questions...</p>
       </div>

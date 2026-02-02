@@ -45,8 +45,8 @@ export const StudyIcon = ({
       <g
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <circle cx="6" cy="15" r="4" />
         <circle cx="18" cy="15" r="4" />

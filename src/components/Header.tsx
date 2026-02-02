@@ -30,7 +30,7 @@ export const Header = () => {
       <LargeIcon className="hidden sm:block" />
       <SmallIcon className="sm:hidden" />
       <nav className="brutal-shadow bg-white rounded-4xl">
-        <ul className="flex gap-1 px-1 pt-2 pb-1 md:py-4 font-semibold">
+        <ul className="flex gap-1 px-1 pt-2 pb-1 sm:py-4 font-semibold">
           <li>
             <NavLink
               to="/quiz"
@@ -38,13 +38,13 @@ export const Header = () => {
                 cn(
                   "rounded-4xl",
                   isActive
-                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
                     : "px-3 py-3"
                 )
               }
             >
-              <span className="hidden md:inline-block">Study</span>
-              <span className="inline-block md:hidden">
+              <span className="hidden sm:inline-block">Study</span>
+              <span className="inline-block sm:hidden">
                 <StudyIcon size={40} />
               </span>
             </NavLink>
@@ -56,13 +56,13 @@ export const Header = () => {
                 cn(
                   "rounded-4xl",
                   isActive
-                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
                     : "px-3 py-3"
                 )
               }
             >
-              <span className="hidden md:inline-block">Cards</span>
-              <span className="inline-block md:hidden">
+              <span className="hidden sm:inline-block">Cards</span>
+              <span className="inline-block sm:hidden">
                 <QuestionIcon size={40} />
               </span>
             </NavLink>
@@ -74,13 +74,13 @@ export const Header = () => {
                 cn(
                   "rounded-4xl",
                   isActive
-                    ? "bg-yellow-400 px-3 pt-7 pb-0 md:py-3"
+                    ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
                     : "px-3 py-3"
                 )
               }
             >
-              <span className="hidden md:inline-block">Categories</span>
-              <span className="inline-block md:hidden">
+              <span className="hidden sm:inline-block">Categories</span>
+              <span className="inline-block sm:hidden">
                 <CategoryIcon size={40} />
               </span>
             </NavLink>
@@ -88,8 +88,8 @@ export const Header = () => {
         </ul>
       </nav>
       <Button onClick={logoutHandler}>
-        <span className="hidden md:inline-block">LogOut</span>
-        <span className="md:hidden">
+        <span className="hidden sm:inline-block">Logout</span>
+        <span className="sm:hidden">
           <LogoutIcon size={40} />
         </span>
       </Button>

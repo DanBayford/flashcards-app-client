@@ -2,6 +2,8 @@ import { useToast } from "./useToast";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 
+const QUESTION_CACHE_KEY = "questions";
+
 export const useQuestions = (
   pageNumber: number = 1,
   categoryIds: string[] = [],
@@ -11,7 +13,7 @@ export const useQuestions = (
   const { successToast, errorToast } = useToast();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: [`/questions`, pageNumber, categoryIds, hideMastered],
+    queryKey: [QUESTION_CACHE_KEY, pageNumber, categoryIds, hideMastered],
     queryFn: () =>
       api.Questions.getQuestions({
         page: pageNumber,
@@ -25,7 +27,7 @@ export const useQuestions = (
       mutationFn: api.Questions.createQuestion,
       onSuccess: () => {
         // Invalidates all keys inc 'questions'
-        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        queryClient.invalidateQueries({ queryKey: [QUESTION_CACHE_KEY] });
         successToast("New question created");
         // Call appropriate success callback (clear form / close modal)
         successCallback();
@@ -40,7 +42,7 @@ export const useQuestions = (
     return useMutation({
       mutationFn: api.Questions.updateQuestion,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        queryClient.invalidateQueries({ queryKey: [QUESTION_CACHE_KEY] });
         successToast("Question updated");
         successCallback();
       },
@@ -54,7 +56,7 @@ export const useQuestions = (
     return useMutation({
       mutationFn: api.Questions.deleteQuestion,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["/questions"] });
+        queryClient.invalidateQueries({ queryKey: [QUESTION_CACHE_KEY] });
         successToast("Question deleted");
         successCallback();
       },

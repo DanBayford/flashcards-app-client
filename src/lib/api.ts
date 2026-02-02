@@ -3,15 +3,16 @@ import axios from "axios";
 import type { AxiosResponse, AxiosRequestConfig } from "axios";
 import { toast } from "react-toastify";
 import type {
+  TCategory,
   TLoginRequest,
   TRegisterRequest,
   TAuthResponse,
   TQuestionsRequest,
   TPaginatedQuestions,
-  TCategory,
   TQuestion,
   TCreateNewQuestionRequest,
   TUpdateQuestionRequest,
+  TNewCategoryForm,
 } from "@/types";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -221,6 +222,11 @@ const Questions = {
 
 const Categories = {
   getCategories: () => requests.get<TCategory[]>("/category"),
+  createCategory: ({ name }: TNewCategoryForm) =>
+    requests.post<TCategory>("/category", { name }),
+  updateCategory: ({ id, name }: TCategory) =>
+    requests.put(`/category/${id}`, { name }),
+  deleteCategory: (id: string) => requests.delete(`/category/${id}`),
 };
 
 const api = {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { DeleteModal } from "@/components";
 import { CategorySelect } from "@/components/categories";
-import { DeleteQuestion } from "@/components/questions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,7 +62,8 @@ export const QuestionForm = ({
   // Key to force select to remount and clear internal state
   const [selectKey, setSelectKey] = useState(0);
 
-  const { useCreateQuestion, useUpdateQuestion } = useQuestions();
+  const { useCreateQuestion, useUpdateQuestion, useDeleteQuestion } =
+    useQuestions();
 
   const formResetHandler = () => {
     // Clear prompt, hint and answer
@@ -77,8 +78,10 @@ export const QuestionForm = ({
   const successCallback = isEditingQuestion
     ? closeDialogCallback
     : formResetHandler;
+
   const createQuestionMutation = useCreateQuestion(successCallback);
   const updateQuestionMutation = useUpdateQuestion(successCallback);
+  const deleteQuestionMutation = useDeleteQuestion(successCallback);
 
   // Determine if any category options should be already selected
   const alreadySelectedIds = questionToEdit
@@ -127,10 +130,12 @@ export const QuestionForm = ({
   return (
     <section className="col-span-full brutal-shadow bg-white rounded-4xl">
       {showDeleteConfirmView && questionToEdit && closeDialogCallback ? (
-        <DeleteQuestion
+        <DeleteModal
           id={questionToEdit.id}
+          resourceType={"question"}
           toggleDeleteConfirmView={toggleDeleteConfirmView}
-          successCallback={closeDialogCallback}
+          deleteMutation={deleteQuestionMutation.mutateAsync}
+          deletePending={deleteQuestionMutation.isPending}
         />
       ) : (
         <form

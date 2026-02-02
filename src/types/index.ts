@@ -58,6 +58,10 @@ export type TCategory = {
   name: string;
 };
 
+export type TNewCategoryForm = {
+  name: string;
+};
+
 // Quiz types
 
 // Misc
