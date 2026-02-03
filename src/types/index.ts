@@ -63,6 +63,18 @@ export type TNewCategoryForm = {
 };
 
 // Quiz types
+export type TNewQuizParams = {
+  categoryIds: string[];
+  includeMastered: boolean;
+};
+export type TQuizObject = {
+  questions: TQuestion[];
+  includeMastered: boolean;
+  totalCards: number;
+  totalMastered: number; // 5/5 confidence
+  totalInProgress: number; // 1/5 - 4/5 confidence
+  totalNotStarted: number; // 0/5 confidence
+};
 
 // Misc
 export type TPaginationObject = {

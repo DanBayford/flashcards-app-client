@@ -33,7 +33,7 @@ export const QuestionsListControls = () => {
   };
 
   const selectHandler = (
-    data: MultiValue<{ value: string; label: string }>
+    data: MultiValue<{ value: string; label: string }>,
   ) => {
     const hideMasteredParam = searchParams.get("hideMastered");
 
@@ -59,7 +59,7 @@ export const QuestionsListControls = () => {
         customControlStyles={{ minWidth: "200px", maxWidth: "500px" }}
       />
       <span>
-        <Label>
+        <Label className="hover:cursor-pointer">
           <Checkbox
             checked={!!hideMastered}
             onCheckedChange={checkboxHandler}

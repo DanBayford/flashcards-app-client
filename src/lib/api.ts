@@ -51,7 +51,7 @@ axiosInstance.interceptors.request.use(
   async (err) => {
     // console.log("axios request interceptor error", err);
     return Promise.reject(err);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -123,7 +123,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(err);
-  }
+  },
 );
 
 // Axios config
@@ -134,26 +134,26 @@ const requests = {
   post: async <TResponse, TBody = unknown>(
     url: string,
     body: TBody,
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
   ) =>
     (
       await axiosInstance.post<TResponse, AxiosResponse<TResponse>, TBody>(
         url,
         body,
-        config
+        config,
       )
     ).data,
 
   put: async <TResponse, TBody = unknown>(
     url: string,
     body: TBody,
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
   ) =>
     (
       await axiosInstance.put<TResponse, AxiosResponse<TResponse>, TBody>(
         url,
         body,
-        config
+        config,
       )
     ).data,
 
@@ -229,10 +229,19 @@ const Categories = {
   deleteCategory: (id: string) => requests.delete(`/category/${id}`),
 };
 
+const Quiz = {
+  generateQuiz: (questionCategoryIds: string[], includeMastered: boolean) =>
+    requests.post<TQuestion[]>("/quiz/generate", {
+      questionCategoryIds,
+      includeMastered,
+    }),
+};
+
 const api = {
   User,
   Questions,
   Categories,
+  Quiz,
 };
 
 export default api;

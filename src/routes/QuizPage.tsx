@@ -1,12 +1,12 @@
 import { QuizContainer, QuizStatistics } from "@/components/quiz";
+import { QuizProvider } from "@/contexts/QuizContextProvider";
 
 const QuizPage = () => {
-  // Quiz Context
   return (
-    <>
+    <QuizProvider>
       <QuizContainer />
       <QuizStatistics />
-    </>
+    </QuizProvider>
   );
 };
 
