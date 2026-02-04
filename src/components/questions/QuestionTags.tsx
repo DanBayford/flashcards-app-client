@@ -8,7 +8,7 @@ export const QuestionTags = ({ tags }: { tags: TCategory[] }) => {
         .sort(({ name: a }, { name: b }) => a.localeCompare(b))
         .map((tag) => (
           <li key={tag.id}>
-            <Label className="px-4 py-2 brutal-shadow rounded-2xl ">
+            <Label className="px-4 py-2 bg-white brutal-shadow rounded-2xl ">
               {tag.name}
             </Label>
           </li>

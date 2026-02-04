@@ -5,7 +5,7 @@ export const QuestionConfidence = ({ confidence }: { confidence: number }) => {
 
   return (
     <span className="flex items-center gap-2 text-sm">
-      <Progress value={confidencePercent} className="w-[60px]" />
+      <Progress value={confidencePercent} />
       {confidence} / 5
     </span>
   );

@@ -3,6 +3,13 @@ import { createContext } from "react";
 
 export type TQuizContext = {
   quizObject: TQuizObject | undefined;
+  currentCardIndex: number;
+  showHints: boolean;
+  toggleShowHints: () => void;
+  incrementCardIndex: () => void;
+  decrementCardIndex: () => void;
+  isUpdatingQuestionConfidence: boolean;
+  updateQuestionConfidence: (questionId: string, newConfidence: number) => void;
   generateQuiz: (categoryIds: string[], includeMastered: boolean) => void;
 };
 

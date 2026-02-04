@@ -30,8 +30,8 @@ export const GenerateQuiz = () => {
   };
 
   return (
-    <div className="p-4 flex justify-between align-items border-b border-black">
-      <div className="flex gap-4 items-center">
+    <div className="p-4 flex justify-between align-items items-center border-b border-black">
+      <div className="flex flex-col md:flex-row gap-2 sm:gap-4 items-start md:items-center">
         <CategorySelect selectCallback={selectHandler} />
         <Label className="hover:cursor-pointer">
           <Checkbox

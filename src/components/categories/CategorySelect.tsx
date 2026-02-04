@@ -46,10 +46,8 @@ export const CategorySelect = ({
           padding: "4px",
           borderRadius: "20px",
           border: "1px solid black",
-          boxShadow: "2px 2px 0px rgba(0, 0, 0, 1)",
           "&:hover": {
-            border: "1px solid black",
-            boxShadow: "2px 2px 0px rgba(0, 0, 0, 1)",
+            cursor: "pointer",
           },
           ...customControlStyles,
         }),

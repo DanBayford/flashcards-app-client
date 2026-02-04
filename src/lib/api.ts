@@ -235,6 +235,11 @@ const Quiz = {
       questionCategoryIds,
       includeMastered,
     }),
+  updateQuiz: async (
+    updatedQuestions: { questionId: string; newConfidenceLevel: number }[],
+  ) => {
+    return requests.post("/quiz/update", { updatedQuestions });
+  },
 };
 
 const api = {
