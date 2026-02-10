@@ -17,7 +17,9 @@ export const CategoryCard = ({ category }: { category: TCategory }) => {
 
   return (
     <li className="flex justify-between items-center brutal-shadow bg-white rounded-xl text-xl">
-      <p className="p-2">{category.name}</p>
+      <p className="p-2">
+        {category.name} ({category.questionCount})
+      </p>
       <span className="p-2 border-l border-black">
         <Dialog
           open={isDialogOpen}

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const StudyIcon = ({
   size = 40,
   color = "#000000",

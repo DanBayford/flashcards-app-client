@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogContent,
 } from "@/components/ui/dialog";
+import { previewText } from "@/lib/utils";
 import type { TQuestion } from "@/types";
 
 export const QuestionCard = ({ question }: { question: TQuestion }) => {
@@ -26,7 +27,7 @@ export const QuestionCard = ({ question }: { question: TQuestion }) => {
       </div>
       <div className="grow p-3 border-b border-black">
         <span className="text-gray-400 font-semibold text-sm">Answer:</span>
-        <p className="mt-2">{question.answer}</p>
+        <p className="mt-2">{previewText(question.answer)}</p>
       </div>
       <div className="border-b border-black">
         <QuestionTags tags={question.categories} />

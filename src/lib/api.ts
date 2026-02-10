@@ -1,6 +1,7 @@
 import AccessToken from "./accessToken";
 import axios from "axios";
 import type { AxiosResponse, AxiosRequestConfig } from "axios";
+import { triggerLogoutHandler } from "./auth";
 import { toast } from "react-toastify";
 import type {
   TCategory,
@@ -12,19 +13,18 @@ import type {
   TQuestion,
   TCreateNewQuestionRequest,
   TUpdateQuestionRequest,
-  TNewCategoryForm,
+  TCreateCategory,
+  TUpdateCategory,
 } from "@/types";
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = import.meta.env.DEV;
 const API_DELAY = isDev ? 400 : 0;
 const sleep = () => new Promise((resolve) => setTimeout(resolve, API_DELAY));
 
 const axiosInstance = axios.create({
-  baseURL: isDev
-    ? "http://localhost:5000/api"
-    : "https://flashcards.bayford.dev/api",
-  timeout: 3000,
-  withCredentials: true, // inc cookies
+  baseURL: isDev ? "http://localhost:5000/api" : "/api",
+  timeout: 6000,
+  withCredentials: true, // inc cookies for refresh token
 });
 
 // Axios defaults
@@ -40,39 +40,30 @@ declare module "axios" {
 // Interceptors
 axiosInstance.interceptors.request.use(
   async (requestConfig) => {
-    // console.log("axios request interceptor", requestConfig);
     const accessToken = AccessToken.get();
-    // console.log("accessToken", accessToken);
     if (accessToken) {
+      // Confirm header object exists before adding token
+      requestConfig.headers = requestConfig.headers || {};
       requestConfig.headers.Authorization = `Bearer ${accessToken}`;
     }
     return requestConfig;
   },
   async (err) => {
-    // console.log("axios request interceptor error", err);
     return Promise.reject(err);
   },
 );
 
 axiosInstance.interceptors.response.use(
   async (response) => {
-    // console.log("axios response interceptor", response);
     await sleep();
-    // Check for response message
     return response;
   },
   async (err) => {
-    // console.log("axios response interceptor error", err);
     const originalRequest = err?.config;
-    const errorStatus = err?.status || 500;
-    // Error message(s) can be single property or array
+    const errorStatus = err?.response?.status || 500;
+    // Error message(s) can be single property or an array
     const errorMessage = err?.response?.data?.error || undefined;
     const errorMessagesArray = err?.response?.data?.errors || undefined;
-
-    // console.log("originalRequest", originalRequest);
-    // console.log("errorStatus", errorStatus);
-    // console.log("errorMessage", errorMessage);
-    // console.log("errorMessagesArray", errorMessagesArray);
 
     // Global API error message handling
     if (!originalRequest?.failSilently) {
@@ -94,17 +85,19 @@ axiosInstance.interceptors.response.use(
             !originalRequest._retry &&
             !originalRequest.url.includes("/user/refresh")
           ) {
-            // console.log("originalRequest", originalRequest);
             originalRequest._retry = true;
             try {
               const { accessToken: newAccessToken } = await api.User.refresh();
-              AccessToken.set(newAccessToken);
-              originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+              if (newAccessToken) {
+                AccessToken.set(newAccessToken);
+                originalRequest.headers = originalRequest.headers || {};
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+              }
               // Retry original request
               return axiosInstance(originalRequest);
             } catch (e) {
               console.error(`Error refreshing token: ${e}`);
-              // toast.error(errorMessage || "Unauthorized");
+              triggerLogoutHandler();
             }
           }
           break;
@@ -116,8 +109,10 @@ axiosInstance.interceptors.response.use(
             errorMessagesArray.forEach((error: string) => {
               toast.error(error || "Something went wromg");
             });
-          } else if (errorMessage && errorStatus !== 401) {
+          } else if (errorMessage) {
             toast.error(errorMessage);
+          } else {
+            toast.error("Something went wrong");
           }
       }
     }
@@ -174,7 +169,7 @@ const User = {
       password: body.password,
     }),
   refresh: ({ failSilently = false }: { failSilently?: boolean } = {}) =>
-    requests.post<TAuthResponse>("/user/refresh", {}, { failSilently }),
+    requests.post<TAuthResponse>("/user/refresh", {}, { failSilently }), // [TODO] single attempt?
   logout: () => requests.post<void>("/user/logout", {}),
 };
 
@@ -222,9 +217,9 @@ const Questions = {
 
 const Categories = {
   getCategories: () => requests.get<TCategory[]>("/category"),
-  createCategory: ({ name }: TNewCategoryForm) =>
+  createCategory: ({ name }: TCreateCategory) =>
     requests.post<TCategory>("/category", { name }),
-  updateCategory: ({ id, name }: TCategory) =>
+  updateCategory: ({ id, name }: TUpdateCategory) =>
     requests.put(`/category/${id}`, { name }),
   deleteCategory: (id: string) => requests.delete(`/category/${id}`),
 };

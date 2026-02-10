@@ -1,4 +1,4 @@
-import { useSearchParams, Link } from "react-router";
+import { useSearchParams } from "react-router";
 import {
   QuestionForm,
   QuestionsList,

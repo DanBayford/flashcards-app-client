@@ -11,7 +11,7 @@ export const QuizStatistics = () => {
     <section className="col-span-4 md:col-span-3 min-h-140 brutal-shadow bg-white rounded-4xl">
       <div className="p-4 flex flex-col gap-2 h-full">
         <h2 className="text-xl font-semibold">Study Statistics</h2>
-        <ul className="flex flex-col grow justify-between">
+        <ul className="flex flex-col grow gap-4">
           <StatCard>
             <StatCard.Info
               title={"Total Cards"}

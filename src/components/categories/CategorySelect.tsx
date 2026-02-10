@@ -21,7 +21,7 @@ export const CategorySelect = ({
   // All available options
   const selectCategories = categories.map((category) => ({
     value: category.id,
-    label: category.name,
+    label: `${category.name} (${category.questionCount})`,
   }));
 
   // Pre selected options

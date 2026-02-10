@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { FlashcardPagination } from "./FlashcardPagination";
+import YellowStar from "@/assets/img/pattern-star-yellow.svg?react";
+import BlueStar from "@/assets/img/pattern-star-blue.svg?react";
+import PinkStar from "@/assets/img/pattern-star-pink.svg?react";
 
 const CurrentView = {
   Question: "QUESTION",
@@ -86,7 +89,7 @@ export const Flashcards = () => {
     <div className="h-full flex flex-col">
       <div className="grow flex flex-col gap-4 p-4">
         <div
-          className={`grow flex flex-col items-center justify-between p-2 brutal-shadow rounded-xl ${currentView === CurrentView.Question ? "bg-pink-500" : "bg-blue-400"}`}
+          className={`relative grow flex flex-col items-center justify-between p-2 brutal-shadow rounded-xl ${currentView === CurrentView.Question ? "bg-pink-500" : "bg-blue-400"}`}
         >
           <QuestionTags
             tags={quizObject.questions[currentCardIndex].categories}
@@ -98,23 +101,41 @@ export const Flashcards = () => {
                   {quizObject.questions[currentCardIndex].prompt}
                 </h1>
                 {showHints && quizObject.questions[currentCardIndex].hint ? (
-                  <p>{quizObject.questions[currentCardIndex].hint}</p>
+                  <p className="text-gray-800">
+                    ({quizObject.questions[currentCardIndex].hint})
+                  </p>
                 ) : null}
-                <p onClick={toggleCurrentView}>Click to reveal answer</p>
+                <p
+                  className="underline-offset-2 hover:underline hover:cursor-pointer"
+                  onClick={toggleCurrentView}
+                >
+                  Click to reveal answer
+                </p>
               </>
             ) : (
               <>
-                <p>Answer:</p>
-                <p className="text-lg font-semibold">
+                <p className="animate-fade">Answer:</p>
+                <p className="text-lg font-semibold animate-fade">
                   {quizObject.questions[currentCardIndex].answer}
                 </p>
-                <p onClick={toggleCurrentView}>Back to question</p>
+                <p
+                  className="underline-offset-2 animate-fade hover:underline hover:cursor-pointer"
+                  onClick={toggleCurrentView}
+                >
+                  Back to question
+                </p>
               </>
             )}
           </div>
           <QuestionConfidence
             confidence={quizObject.questions[currentCardIndex].confidence}
           />
+          <YellowStar className="absolute left-6 bottom-8" />
+          {currentView === CurrentView.Question ? (
+            <BlueStar className="absolute right-6 top-8" />
+          ) : (
+            <PinkStar className="absolute right-6 top-8" />
+          )}
         </div>
         <div className="relative flex justify-evenly sm:justify-center gap-4">
           <Label className="sm:absolute left-0 top-4 hover:cursor-pointer">

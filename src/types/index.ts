@@ -14,7 +14,7 @@ export type TNewQuestionForm = {
   prompt: string;
   hint: string;
   answer: string;
-  categories: TCategory[];
+  categories: TUpdateCategory[];
 };
 
 export type TCreateNewQuestionRequest = {
@@ -56,9 +56,15 @@ export type TPaginatedQuestions = {
 export type TCategory = {
   id: string;
   name: string;
+  questionCount: number;
 };
 
-export type TNewCategoryForm = {
+export type TUpdateCategory = {
+  id: string;
+  name: string;
+};
+
+export type TCreateCategory = {
   name: string;
 };
 

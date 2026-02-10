@@ -7,10 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
 import { useCategories } from "@/hooks";
 import * as yup from "yup";
-import type { TCategory, TNewCategoryForm } from "@/types";
+import type { TCategory, TCreateCategory } from "@/types";
 
 const schema = yup.object({
-  name: yup.string().required("A category is required"),
+  name: yup.string().required("A category name is required"),
 });
 
 export const CategoryForm = ({
@@ -27,7 +27,7 @@ export const CategoryForm = ({
     handleSubmit,
     reset: resetForm,
     formState: { errors },
-  } = useForm<TNewCategoryForm>({
+  } = useForm<TCreateCategory>({
     resolver: yupResolver(schema),
     mode: "onSubmit",
     reValidateMode: "onChange",

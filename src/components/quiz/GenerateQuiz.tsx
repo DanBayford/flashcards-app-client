@@ -32,7 +32,10 @@ export const GenerateQuiz = () => {
   return (
     <div className="p-4 flex justify-between align-items items-center border-b border-black">
       <div className="flex flex-col md:flex-row gap-2 sm:gap-4 items-start md:items-center">
-        <CategorySelect selectCallback={selectHandler} />
+        <CategorySelect
+          selectCallback={selectHandler}
+          customControlStyles={{ maxWidth: "370px" }}
+        />
         <Label className="hover:cursor-pointer">
           <Checkbox
             checked={!quizParams.includeMastered}

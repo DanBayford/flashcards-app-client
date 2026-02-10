@@ -84,7 +84,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
             : q,
         ) ?? [];
 
-      // Update quiz params
+      // Update quiz metadata
       const totalMastered = questions.filter((q) => q.confidence === 5).length;
       const totalInProgress = questions.filter(
         (q) => q.confidence > 0 && q.confidence < 5,
@@ -93,7 +93,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
         (q) => q.confidence === 0,
       ).length;
 
-      // Return new object (ie no references to proeviosQuiz)
+      // Return new object (ie no references to previousQuiz)
       return {
         ...prev,
         questions,

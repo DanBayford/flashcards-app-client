@@ -53,7 +53,7 @@ export const LoginForm = () => {
   });
 
   const onSubmitHandler = handleSubmit(
-    async (values: TLoginRequest) => await mutateAsync(values)
+    async (values: TLoginRequest) => await mutateAsync(values),
   );
 
   return (
@@ -69,6 +69,7 @@ export const LoginForm = () => {
         <Input
           id="email"
           type="email"
+          placeholder="dan@flashcards.com"
           autoComplete="email"
           {...register("email")}
         />
@@ -81,6 +82,7 @@ export const LoginForm = () => {
         <Input
           id="password"
           type="password"
+          placeholder="P@ssword123!"
           autoComplete="current-password"
           {...register("password")}
         />

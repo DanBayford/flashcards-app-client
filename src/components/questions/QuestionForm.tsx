@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DeleteModal } from "@/components";
@@ -10,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useQuestions } from "@/hooks";
 import * as yup from "yup";
+import type { MultiValue } from "react-select";
 import type { TNewQuestionForm, TQuestion } from "@/types";
 
 const schema = yup.object({
@@ -38,6 +40,7 @@ export const QuestionForm = ({
     register,
     handleSubmit,
     reset: resetForm,
+    clearErrors,
     setValue,
     formState: { errors },
   } = useForm<TNewQuestionForm>({
@@ -52,9 +55,11 @@ export const QuestionForm = ({
     },
   });
 
+  const location = useLocation();
+
   // State for edit form confidence radio selects
   const [confidence, setConfidence] = useState<string | undefined>(
-    questionToEdit?.confidence.toString() || undefined
+    questionToEdit?.confidence.toString() || undefined,
   );
   // Toggle edit modal view
   const [showDeleteConfirmView, setShowDeleteConfirmView] =
@@ -64,6 +69,11 @@ export const QuestionForm = ({
 
   const { useCreateQuestion, useUpdateQuestion, useDeleteQuestion } =
     useQuestions();
+
+  // Remove any existing form errors on URL state change (pagination, filtering etc)
+  useEffect(() => {
+    clearErrors();
+  }, [clearErrors, location.search]);
 
   const formResetHandler = () => {
     // Clear prompt, hint and answer
@@ -95,7 +105,7 @@ export const QuestionForm = ({
 
   // Monitor category select input
   const selectHandler = (
-    selectedCategories: { value: string; label: string }[]
+    selectedCategories: MultiValue<{ value: string; label: string }>,
   ) => {
     const newCategories = selectedCategories.map((c) => ({
       id: c.value,
@@ -196,7 +206,6 @@ export const QuestionForm = ({
             <CategorySelect
               selectCallback={selectHandler}
               alreadySelectedIds={alreadySelectedIds}
-              questionToEdit={questionToEdit}
               key={selectKey}
               customControlStyles={{
                 border: "1px solid #EBEBEB",

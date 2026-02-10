@@ -1,5 +1,3 @@
-import React from "react";
-
 export const CategoryIcon = ({
   size = 40,
   color = "#000000",

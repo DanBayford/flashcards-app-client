@@ -1,7 +1,7 @@
 import { useQuestions } from "@/hooks/useQuestions";
 import { QuestionCard } from "./QuestionCard";
 import { PaginationButtons } from "../PaginationButtons";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 export const QuestionsList = ({
   pageNumber,
@@ -17,7 +17,7 @@ export const QuestionsList = ({
 
   if (questionsLoading) {
     return (
-      <div className="col-span-full flex flex-col gap-4 justify-center items-center mt-30">
+      <div className="col-span-full flex flex-col gap-4 justify-center items-center mt-10">
         <Spinner className="size-8" />
         <p>Loading questions...</p>
       </div>
@@ -26,7 +26,9 @@ export const QuestionsList = ({
 
   if (questionsError) {
     return (
-      <p className="col-span-full mt-4 text-center">Error loading questions</p>
+      <p className="col-span-full mt-4 text-red-500 text-center">
+        Error loading questions
+      </p>
     );
   }
 

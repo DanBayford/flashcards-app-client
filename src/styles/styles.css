@@ -144,6 +144,17 @@
   --font-sans:
     "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+
+  --animate-fade: fade 1s ease-in forwards;
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 100;
+    }
+  }
 }
 
 /* Toast container styles */
