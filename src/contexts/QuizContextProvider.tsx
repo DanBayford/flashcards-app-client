@@ -8,6 +8,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
   const [quizObject, setQuizObject] = useState<TQuizObject | undefined>(
     undefined,
   );
+  const [isQuizLoading, setIsQuizLoading] = useState<boolean>(false);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [showHints, setShowHints] = useState<boolean>(false);
 
@@ -23,6 +24,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
     categoryIds: string[] = [],
     includeMastered: boolean = false,
   ) => {
+    setIsQuizLoading(true);
     try {
       const questions = await api.Quiz.generateQuiz(
         categoryIds,
@@ -60,6 +62,8 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
     } catch (e) {
       errorToast("Error generating quiz");
       console.error("Error generating quiz", e);
+    } finally {
+      setIsQuizLoading(false);
     }
   };
 
@@ -122,6 +126,7 @@ export const QuizProvider = ({ children }: { children: ReactNode }) => {
       value={{
         quizObject,
         generateQuiz,
+        isQuizLoading,
         showHints,
         toggleShowHints,
         currentCardIndex,

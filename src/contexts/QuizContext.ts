@@ -3,6 +3,7 @@ import { createContext } from "react";
 
 export type TQuizContext = {
   quizObject: TQuizObject | undefined;
+  isQuizLoading: boolean;
   currentCardIndex: number;
   showHints: boolean;
   toggleShowHints: () => void;

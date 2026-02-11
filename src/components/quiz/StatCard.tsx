@@ -20,7 +20,9 @@ const StatIcon = ({ icon, color }: { icon: ReactNode; color: string }) => {
 };
 
 export const StatCard = ({ children }: { children: ReactNode }) => {
-  return <li className="flex brutal-shadow rounded-xl">{children}</li>;
+  return (
+    <li className="grid-col-1 flex brutal-shadow rounded-xl">{children}</li>
+  );
 };
 
 StatCard.Info = StatInfo;

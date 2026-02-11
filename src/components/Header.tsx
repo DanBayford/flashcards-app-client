@@ -26,10 +26,15 @@ export const Header = () => {
   };
 
   return (
-    <header className="max-w-250 mx-auto mb-4 flex justify-between items-center">
-      <LargeIcon className="hidden sm:block" />
-      <SmallIcon className="sm:hidden" />
-      <nav className="brutal-shadow bg-white rounded-4xl">
+    <header className="w-[90%] max-w-250 mx-auto mb-4 flex flex-wrap justify-between items-center">
+      <div className="w-full mb-4 sm:w-40 sm:mb-0 flex justify-between">
+        <LargeIcon />
+        <Button className="w-12 sm:hidden" onClick={logoutHandler}>
+          <LogoutIcon size={40} />
+        </Button>
+      </div>
+
+      <nav className="ml-auto sm:ml-0 brutal-shadow bg-white rounded-4xl">
         <ul className="flex gap-1 px-1 pt-2 pb-1 sm:py-4 font-semibold">
           <li>
             <NavLink
@@ -39,7 +44,7 @@ export const Header = () => {
                   "rounded-4xl",
                   isActive
                     ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
-                    : "px-3 py-3"
+                    : "px-3 py-3",
                 )
               }
             >
@@ -57,7 +62,7 @@ export const Header = () => {
                   "rounded-4xl",
                   isActive
                     ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
-                    : "px-3 py-3"
+                    : "px-3 py-3",
                 )
               }
             >
@@ -75,7 +80,7 @@ export const Header = () => {
                   "rounded-4xl",
                   isActive
                     ? "bg-yellow-400 px-3 pt-7 pb-0 sm:py-3"
-                    : "px-3 py-3"
+                    : "px-3 py-3",
                 )
               }
             >
@@ -87,11 +92,9 @@ export const Header = () => {
           </li>
         </ul>
       </nav>
-      <Button onClick={logoutHandler}>
-        <span className="hidden sm:inline-block">Logout</span>
-        <span className="sm:hidden">
-          <LogoutIcon size={40} />
-        </span>
+
+      <Button className="hidden sm:inline-block" onClick={logoutHandler}>
+        Logout
       </Button>
     </header>
   );

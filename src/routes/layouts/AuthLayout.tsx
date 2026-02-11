@@ -16,12 +16,12 @@ const AuthLayout = () => {
   }, [accessToken, authReady, navigate]);
 
   return (
-    <div className="w-100 mx-auto flex flex-col gap-4 items-center mt-20">
-      <div className="flex w-full justify-center p-3 bg-white brutal-shadow rounded-md">
+    <div className="w-[90%] md:w-100 mx-auto flex flex-col gap-4 items-center mt-20">
+      <div className="flex w-[90%] md:w-full justify-center p-3 bg-white brutal-shadow rounded-md">
         <LargeLogo className="hidden sm:block" />
         <SmallLogo className="sm:hidden" />
       </div>
-      <main className="w-full p-3 bg-white brutal-shadow rounded-md">
+      <main className="w-[90%] md:w-full p-3 bg-white brutal-shadow rounded-md">
         <Outlet />
       </main>
     </div>

@@ -8,10 +8,10 @@ import NotStartedCards from "@/assets/img/icon-stats-not-started.svg?react";
 export const QuizStatistics = () => {
   const { quizObject } = useQuiz();
   return (
-    <section className="col-span-4 md:col-span-3 min-h-140 brutal-shadow bg-white rounded-4xl">
+    <section className="col-span-4 lg:col-span-3 lg:min-h-140 brutal-shadow bg-white rounded-4xl">
       <div className="p-4 flex flex-col gap-2 h-full">
         <h2 className="text-xl font-semibold">Study Statistics</h2>
-        <ul className="flex flex-col grow gap-4">
+        <ul className="grid grid-col-1 md:grid-cols-2 lg:flex lg:flex-col gap-4">
           <StatCard>
             <StatCard.Info
               title={"Total Cards"}

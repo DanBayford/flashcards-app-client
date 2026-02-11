@@ -1,25 +1,28 @@
-import { useState } from "react";
 import { Link } from "react-router";
 import { useQuiz } from "@/hooks";
 import { QuestionConfidence, QuestionTags } from "@/components/questions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import { CurrentView } from "./QuizContainer";
 import { FlashcardPagination } from "./FlashcardPagination";
 import YellowStar from "@/assets/img/pattern-star-yellow.svg?react";
 import BlueStar from "@/assets/img/pattern-star-blue.svg?react";
 import PinkStar from "@/assets/img/pattern-star-pink.svg?react";
 
-const CurrentView = {
-  Question: "QUESTION",
-  Answer: "ANSWER",
-} as const;
-
-type CurrentView = (typeof CurrentView)[keyof typeof CurrentView];
-
-export const Flashcards = () => {
+export const Flashcards = ({
+  currentView,
+  toggleCurrentView,
+  resetView,
+}: {
+  currentView: string;
+  toggleCurrentView: () => void;
+  resetView: () => void;
+}) => {
   const {
     quizObject,
+    isQuizLoading,
     currentCardIndex,
     showHints,
     toggleShowHints,
@@ -27,21 +30,14 @@ export const Flashcards = () => {
     isUpdatingQuestionConfidence,
   } = useQuiz();
 
-  const [currentView, setCurrentView] = useState<CurrentView>(
-    CurrentView.Question,
-  );
-
-  const toggleCurrentView = () => {
-    setCurrentView((s) => {
-      if (s === CurrentView.Answer) {
-        return CurrentView.Question;
-      } else {
-        return CurrentView.Answer;
-      }
-    });
-  };
-
-  const resetView = () => setCurrentView(CurrentView.Question);
+  if (isQuizLoading) {
+    return (
+      <div className="h-full flex flex-col justify-center items-center gap-2">
+        <Spinner className="size-16" />
+        <p>Loading quiz...</p>
+      </div>
+    );
+  }
 
   if (quizObject === undefined) {
     return (
@@ -97,7 +93,7 @@ export const Flashcards = () => {
           <div className="flex flex-col gap-2 text-center">
             {currentView === CurrentView.Question ? (
               <>
-                <h1 className="text-4xl font-bold">
+                <h1 className="text-2xl md:text-4xl font-bold">
                   {quizObject.questions[currentCardIndex].prompt}
                 </h1>
                 {showHints && quizObject.questions[currentCardIndex].hint ? (
@@ -130,14 +126,14 @@ export const Flashcards = () => {
           <QuestionConfidence
             confidence={quizObject.questions[currentCardIndex].confidence}
           />
-          <YellowStar className="absolute left-6 bottom-8" />
+          <YellowStar className="absolute left-2 md:left-6 bottom-8" />
           {currentView === CurrentView.Question ? (
-            <BlueStar className="absolute right-6 top-8" />
+            <BlueStar className="absolute right-2 md:right-6 top-8" />
           ) : (
-            <PinkStar className="absolute right-6 top-8" />
+            <PinkStar className="absolute right-2 md:right-6 top-8" />
           )}
         </div>
-        <div className="relative flex justify-evenly sm:justify-center gap-4">
+        <div className="relative flex flex-col sm:flex-row justify-evenly sm:justify-center gap-4">
           <Label className="sm:absolute left-0 top-4 hover:cursor-pointer">
             <Checkbox checked={showHints} onCheckedChange={toggleShowHints} />
             <span>Hints</span>
