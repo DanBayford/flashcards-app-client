@@ -10,7 +10,6 @@ import {
 import api from "@/lib/api";
 import { cn } from "@/lib/utils";
 import LargeIcon from "@/assets/img/logo-large.svg?react";
-import SmallIcon from "@/assets/img/logo-small.svg?react";
 
 export const Header = () => {
   const navigate = useNavigate();
